@@ -1,30 +1,44 @@
 from binance.client import Client
-# import plotly.graph_objects as go
+# from binance.client.Client import get_all_coins_info
+import plotly.graph_objects as go
 import os
 import pandas as pd
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+
 
 api_key = os.environ.get('api_key')
 api_secret = os.environ.get('api_secret')
 client = Client(api_key, api_secret)
-
-# candles = client.get_klines(symbol='BNBBTC', interval=Client.KLINE_INTERVAL_30MINUTE)
-# for _ in candles:
-#     print(_)
-
-for kline in client.get_historical_klines_generator("BNBBTC", Client.KLINE_INTERVAL_1MINUTE, "1 day ago UTC"):
-    print(kline)
+client.get_all_coins_info()
 
 
+app = dash.Dash(__name__)
 
-# get market depth
-# depth = client.get_order_book(symbol='BNBBTC')
+app.layout = html.Div([
+    dcc.Checklist(
+        id='toggle-rangeslider',
+        options=[{'label': 'Include Rangeslider', 
+                  'value': 'slider'}],
+        value=['slider']
+    ),
+    dcc.Graph(id="graph"),
+])
 
-# prices = client.get_all_tickers()
-# print(prices)
-# for i in prices:
-#     print(i['symbol'],"=>",i['price'])
-# withdraw 100 ETH
-# check docs for assumptions around withdrawals
+@app.callback(
+    Output("graph", "figure"), 
+    [Input("toggle-rangeslider", "value")])
+
+
+    fig.update_layout(
+        xaxis_rangeslider_visible='slider' in value
+    )
+
+    return fig
+
+app.run_server(debug=True)
+
 # def process_message(msg):
 #     print("message type: {}".format(msg['e']))
 #     print(msg)
