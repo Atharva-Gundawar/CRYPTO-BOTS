@@ -1,7 +1,7 @@
-depth = client.get_order_book(symbol='BNBBTC')
-trades = client.get_recent_trades(symbol='BNBBTC')
-trades = client.get_historical_trades(symbol='BNBBTC')
-trades = client.get_aggregate_trades(symbol='BNBBTC')
+get_depth = lambda client,token_symbol: client.get_order_book(symbol=token_symbol)
+get_trades = lambda client,token_symbol: client.get_recent_trades(symbol=token_symbol)
+get_trades = lambda client,token_symbol: client.get_historical_trades(symbol=token_symbol)
+get_trades = lambda client,token_symbol: client.get_aggregate_trades(symbol=token_symbol)
 
 agg_trades = client.aggregate_trade_iter(symbol='ETHBTC', start_str='30 minutes ago UTC')
 
