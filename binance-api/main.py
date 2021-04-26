@@ -30,6 +30,20 @@ app.layout = html.Div([
     Output("graph", "figure"), 
     [Input("toggle-rangeslider", "value")])
 
+def display_candlestick(value,token_symbol):
+    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
+    df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
+    df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
+    df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
+    
+    fig = go.Figure(data=[go.Candlestick(
+    title=token_symbol,
+    yaxis_title='AAPL Stock',
+    x=df['dateTime'],
+    open=df['open'], high=df['high'],
+    low=df['low'], close=df['close'],
+    increasing_line_color= 'cyan', decreasing_line_color= 'red'
+    )])
 
     fig.update_layout(
         xaxis_rangeslider_visible='slider' in value
