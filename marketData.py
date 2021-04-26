@@ -28,8 +28,6 @@ klines = client.get_historical_klines("ETHBTC", Client.KLINE_INTERVAL_30MINUTE, 
 
 # fetch weekly klines since it listed
 klines = client.get_historical_klines("NEOBTC", Client.KLINE_INTERVAL_1WEEK, "1 Jan, 2017")
-Get Historical Kline/Candlesticks using a generator
-Fetch klines using a generator
 
 for kline in client.get_historical_klines_generator("BNBBTC", Client.KLINE_INTERVAL_1MINUTE, "1 day ago UTC")
     print(kline)
