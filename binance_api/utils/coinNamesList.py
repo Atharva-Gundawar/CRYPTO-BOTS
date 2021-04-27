@@ -45,7 +45,6 @@ def get_base_asset_symbol_dict():
     ret_list = {}
     for s in exchange_info['symbols']:
         if s['baseAsset'] not in ret_list.keys():
-            print(s['baseAsset'],"==>",s['symbol'])
             ret_list[s['baseAsset']] = s['symbol']
     return ret_list
 
@@ -53,6 +52,11 @@ def get_symbol_base_asset_dict():
     exchange_info = client.get_exchange_info()
     ret_list = {}
     for s in exchange_info['symbols']:
-        print(s['baseAsset'],"==>",s['symbol'])
         ret_list[s['symbol']] = s['baseAsset']
-    return ret_list
+    ret_dict = []
+    for coin in ret_list.keys(): 
+        if coin == 'BTC':
+            print(coin)
+        ret_dict.append({'label': coin,'value': ret_list[coin]})
+    return ret_dict
+get_symbol_base_asset_dict()
