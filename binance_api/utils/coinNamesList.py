@@ -36,3 +36,19 @@ for s in exchange_info['symbols']:
     # pp.pprint(s)
     print(s['baseAsset'],"==>",s['symbol'])
     # break
+
+def get_base_asset_symbol_list(): 
+    exchange_info = client.get_exchange_info()
+    ret_list = []
+    for s in exchange_info['symbols']:
+        print(s['baseAsset'],"==>",s['symbol'])
+        ret_list.append({s['baseAsset']:s['symbol']})
+    return ret_list
+
+def get_symbol_base_asset_list(): 
+    exchange_info = client.get_exchange_info()
+    ret_list = []
+    for s in exchange_info['symbols']:
+        print(s['baseAsset'],"==>",s['symbol'])
+        ret_list.append({s['symbol']:s['baseAsset']})
+    return ret_list
