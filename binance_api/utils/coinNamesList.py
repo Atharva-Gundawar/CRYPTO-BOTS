@@ -22,3 +22,8 @@ def get_coin_names():
     for coin in coin_names.keys(): 
         ret_list.append({'label': coin,'value': coin_names[coin]})
     return ret_list
+
+def symbol_to_coin(symbol): 
+    with open('binance_api\coins_name.json', 'r') as fp:
+        coin_names = json.load(fp)
+    return coin_names[symbol]

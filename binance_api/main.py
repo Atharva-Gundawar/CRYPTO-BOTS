@@ -7,6 +7,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dotenv import load_dotenv
 import json
+from utils.coinNamesList import get_coin_names,symbol_to_coin
 
 load_dotenv()
 
@@ -18,8 +19,7 @@ with open('binance_api\coins_name.json', 'r') as fp:
     coin_names = json.load(fp)
 
 options = get_coin_names()
-print(options)
-'''
+# print(options)
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
@@ -30,12 +30,8 @@ app.layout = html.Div([
         value=['slider']
     ),
     dcc.Dropdown(
-        options=[
-            {'label': 'Bitcoin', 'value': 'NYC'},
-            {'label': 'Montréal', 'value': 'MTL'},
-            {'label': 'San Francisco', 'value': 'SF'}
-        ],
-        value='MTL'
+        options=options,
+        value='BTC'
     ),
     dcc.Graph(id="graph"),
 ])
@@ -44,14 +40,14 @@ app.layout = html.Div([
     Output("graph", "figure"), 
     [Input("toggle-rangeslider", "value")])
 
-def display_candlestick(value,token_symbol):
+def display_candlestick(value,token_symbol='BTC'):
     candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
     
     fig = go.Figure(data=[go.Candlestick(
-    title=token_symbol,
+    title=options[token_symbol],
     yaxis_title='Stock price',
     x=df['dateTime'],
     open=df['open'], high=df['high'],
@@ -75,4 +71,3 @@ app.run_server(debug=True)
 # bm = BinanceSocketManager(client)
 # bm.start_aggtrade_socket('ETHBTC', process_message)
 # bm.start()
-'''
