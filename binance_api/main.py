@@ -16,20 +16,11 @@ api_key = os.environ.get('api_key')
 api_secret = os.environ.get('api_secret')
 client = Client(api_key, api_secret)
 
-with open('binance_api\coins_name.json', 'r') as fp:
-    coin_names = json.load(fp)
-
 options = get_symbol_base_asset_dict()
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
-    html.H6("Change the value in the text box to see callbacks in action!"),
-    # dcc.Checklist(
-    #     id='toggle-rangeslider',
-    #     options=[{'label': 'Include Rangeslider', 
-    #               'value': 'slider'}],
-    #     value=['slider']
-    # ),
+    html.H2("Choose a Crypo Symbol from below:"),
     dcc.Dropdown(
         id='my-dropdown',
         options=options,
@@ -41,13 +32,10 @@ app.layout = html.Div([
 @app.callback(
     Output("graph", "figure"), 
     [Input('my-dropdown', 'value')])
-    # [Input("toggle-rangeslider", "value"),Input('my-dropdown', 'value')])
 
-# def display_candlestick(n,value,token_symbol='BNBBTC'):
 def display_candlestick(token_symbol='BNBBTC'):
     candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
     print(token_symbol)
-    # candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
     print(token_symbol)
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
@@ -69,13 +57,6 @@ def display_candlestick(token_symbol='BNBBTC'):
 
     return fig
 
-app.run_server(debug=True,port=8051)
 
-# def process_message(msg):
-#     print("message type: {}".format(msg['e']))
-#     print(msg)
-
-# from binance.websockets import BinanceSocketManager
-# bm = BinanceSocketManager(client)
-# bm.start_aggtrade_socket('ETHBTC', process_message)
-# bm.start()
+if __name__ == '__main__':
+    app.run_server(debug=True,port=8051)
