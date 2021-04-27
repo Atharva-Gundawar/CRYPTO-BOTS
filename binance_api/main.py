@@ -14,13 +14,12 @@ api_key = os.environ.get('api_key')
 api_secret = os.environ.get('api_secret')
 client = Client(api_key, api_secret)
 
-with open('binance-api\coins_name.json', 'r') as fp:
+with open('binance_api\coins_name.json', 'r') as fp:
     coin_names = json.load(fp)
 
-print(coin_names)
-
+options = get_coin_names()
+print(options)
 '''
-
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
