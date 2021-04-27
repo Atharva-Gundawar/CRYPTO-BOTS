@@ -25,12 +25,12 @@ app = dash.Dash(__name__)
 
 app.layout = html.Div([
     html.H6("Change the value in the text box to see callbacks in action!"),
-    dcc.Checklist(
-        id='toggle-rangeslider',
-        options=[{'label': 'Include Rangeslider', 
-                  'value': 'slider'}],
-        value=['slider']
-    ),
+    # dcc.Checklist(
+    #     id='toggle-rangeslider',
+    #     options=[{'label': 'Include Rangeslider', 
+    #               'value': 'slider'}],
+    #     value=['slider']
+    # ),
     dcc.Dropdown(
         id='my-dropdown',
         options=options,
@@ -41,11 +41,17 @@ app.layout = html.Div([
 
 @app.callback(
     Output("graph", "figure"), 
-    [Input("toggle-rangeslider", "value"),Input('my-dropdown', 'value')])
+    [Input('my-dropdown', 'value')])
+    # [Input("toggle-rangeslider", "value"),Input('my-dropdown', 'value')])
 
-def display_candlestick(n,value,token_symbol='BNBBTC'):
-    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
-    print(candles)
+# def display_candlestick(n,value,token_symbol='BNBBTC'):
+def display_candlestick(token_symbol='BNBBTC'):
+    candles = client.get_klines(symbol='ETHBTC', interval=Client.KLINE_INTERVAL_1MINUTE)
+    for i in candles:
+        print(i)
+        break
+    # candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
+    print(token_symbol)
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')

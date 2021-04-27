@@ -12,8 +12,11 @@ client = Client(api_key, api_secret)
 coins = client.get_all_coins_info()
 pp = pprint.PrettyPrinter(indent=4)
 temp_dict = {}
+# print(coins[0])
 for i in coins:
     temp_dict[i['coin']] = i['name']
-pp.pprint(temp_dict) 
+    if i['coin'] == 'BTC': 
+        pp.pprint(i)
+# pp.pprint(coins[0]) 
 with open('coins_name.json', 'w') as fp:
     json.dump(temp_dict, fp)

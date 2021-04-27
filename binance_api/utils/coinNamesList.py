@@ -7,6 +7,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dotenv import load_dotenv
 import json
+import pprint
+
+pp = pprint.PrettyPrinter(indent=4)
 
 load_dotenv()
 
@@ -27,3 +30,9 @@ def symbol_to_coin(symbol):
     with open('binance_api\coins_name.json', 'r') as fp:
         coin_names = json.load(fp)
     return coin_names[symbol]
+
+exchange_info = client.get_exchange_info()
+for s in exchange_info['symbols']:
+    # pp.pprint(s)
+    print(s['baseAsset'],"==>",s['symbol'])
+    # break
