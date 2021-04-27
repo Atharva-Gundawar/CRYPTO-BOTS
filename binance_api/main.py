@@ -5,6 +5,7 @@ import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
 from dotenv import load_dotenv
 import json
 from utils.coinNamesList import get_coin_names,symbol_to_coin
@@ -23,6 +24,7 @@ options = get_coin_names()
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
+    html.H6("Change the value in the text box to see callbacks in action!"),
     dcc.Checklist(
         id='toggle-rangeslider',
         options=[{'label': 'Include Rangeslider', 
@@ -30,25 +32,28 @@ app.layout = html.Div([
         value=['slider']
     ),
     dcc.Dropdown(
+        id='my-dropdown',
         options=options,
-        value='BTC'
+        value='BNBBTC'
     ),
     dcc.Graph(id="graph"),
 ])
 
 @app.callback(
     Output("graph", "figure"), 
-    [Input("toggle-rangeslider", "value")])
+    [Input("toggle-rangeslider", "value"),Input('my-dropdown', 'value')])
 
-def display_candlestick(value,token_symbol='BTC'):
+def display_candlestick(n,value,token_symbol='BNBBTC'):
     candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
+    print(candles)
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
     
     fig = go.Figure(data=[go.Candlestick(
-    title=options[token_symbol],
-    yaxis_title='Stock price',
+    # title=symbol_to_coin(token_symbol),
+    # title='Ye lo',
+    # yaxis_title='Stock price',
     x=df['dateTime'],
     open=df['open'], high=df['high'],
     low=df['low'], close=df['close'],
@@ -56,12 +61,12 @@ def display_candlestick(value,token_symbol='BTC'):
     )])
 
     fig.update_layout(
-        xaxis_rangeslider_visible='slider' in value
+        xaxis_rangeslider_visible=True
     )
 
     return fig
 
-app.run_server(debug=True)
+app.run_server(debug=True,port=8051)
 
 # def process_message(msg):
 #     print("message type: {}".format(msg['e']))
