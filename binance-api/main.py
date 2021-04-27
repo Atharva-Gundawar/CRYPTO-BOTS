@@ -6,15 +6,19 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dotenv import load_dotenv
-import pprint
+import json
 
 load_dotenv()
 
 api_key = os.environ.get('api_key')
 api_secret = os.environ.get('api_secret')
 client = Client(api_key, api_secret)
-coins = client.get_all_coins_info()
-print(coins[0])
+
+with open('binance-api\coins_name.json', 'r') as fp:
+    coin_names = json.load(fp)
+
+print(coin_names)
+
 '''
 
 app = dash.Dash(__name__)
