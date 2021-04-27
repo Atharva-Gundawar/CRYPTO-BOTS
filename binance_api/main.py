@@ -8,7 +8,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from dotenv import load_dotenv
 import json
-from utils.coinNamesList import get_coin_names,symbol_to_coin
+from utils.coinNamesList import get_coin_names_and_format,symbol_to_coin
 
 load_dotenv()
 
@@ -19,7 +19,7 @@ client = Client(api_key, api_secret)
 with open('binance_api\coins_name.json', 'r') as fp:
     coin_names = json.load(fp)
 
-options = get_coin_names()
+options = get_coin_names_and_format()
 # print(options)
 app = dash.Dash(__name__)
 
