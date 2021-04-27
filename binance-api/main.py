@@ -1,18 +1,21 @@
 from binance.client import Client
-# from binance.client.Client import get_all_coins_info
 import plotly.graph_objects as go
 import os
 import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dotenv import load_dotenv
+import pprint
 
+load_dotenv()
 
 api_key = os.environ.get('api_key')
 api_secret = os.environ.get('api_secret')
 client = Client(api_key, api_secret)
-client.get_all_coins_info()
-
+coins = client.get_all_coins_info()
+print(coins[0])
+'''
 
 app = dash.Dash(__name__)
 
@@ -22,6 +25,14 @@ app.layout = html.Div([
         options=[{'label': 'Include Rangeslider', 
                   'value': 'slider'}],
         value=['slider']
+    ),
+    dcc.Dropdown(
+        options=[
+            {'label': 'Bitcoin', 'value': 'NYC'},
+            {'label': 'Montréal', 'value': 'MTL'},
+            {'label': 'San Francisco', 'value': 'SF'}
+        ],
+        value='MTL'
     ),
     dcc.Graph(id="graph"),
 ])
@@ -38,7 +49,7 @@ def display_candlestick(value,token_symbol):
     
     fig = go.Figure(data=[go.Candlestick(
     title=token_symbol,
-    yaxis_title='AAPL Stock',
+    yaxis_title='Stock price',
     x=df['dateTime'],
     open=df['open'], high=df['high'],
     low=df['low'], close=df['close'],
@@ -61,3 +72,4 @@ app.run_server(debug=True)
 # bm = BinanceSocketManager(client)
 # bm.start_aggtrade_socket('ETHBTC', process_message)
 # bm.start()
+'''
