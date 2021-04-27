@@ -57,6 +57,5 @@ def get_symbol_base_asset_dict():
     for coin in ret_list.keys(): 
         if coin == 'BTC':
             print(coin)
-        ret_dict.append({'label': coin,'value': ret_list[coin]})
+        ret_dict.append({'label': ret_list[coin],'value': coin})
     return ret_dict
-get_symbol_base_asset_dict()

@@ -45,10 +45,8 @@ app.layout = html.Div([
 
 # def display_candlestick(n,value,token_symbol='BNBBTC'):
 def display_candlestick(token_symbol='BNBBTC'):
-    candles = client.get_klines(symbol='ETHBTC', interval=Client.KLINE_INTERVAL_1MINUTE)
-    for i in candles:
-        print(i)
-        break
+    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
+    print(token_symbol)
     # candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
     print(token_symbol)
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
@@ -56,9 +54,7 @@ def display_candlestick(token_symbol='BNBBTC'):
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
     
     fig = go.Figure(data=[go.Candlestick(
-    # title=symbol_to_coin(token_symbol),
-    # title='Ye lo',
-    # yaxis_title='Stock price',
+ 
     x=df['dateTime'],
     open=df['open'], high=df['high'],
     low=df['low'], close=df['close'],
@@ -66,6 +62,8 @@ def display_candlestick(token_symbol='BNBBTC'):
     )])
 
     fig.update_layout(
+        title=token_symbol,
+        yaxis_title='Stock price',
         xaxis_rangeslider_visible=True
     )
 
