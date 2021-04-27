@@ -1,4 +1,4 @@
-import binance
+from binance.client import Client
 
 get_depth = lambda client,token_symbol: client.get_order_book(symbol=token_symbol)
 get_recent_trades = lambda client,token_symbol: client.get_recent_trades(symbol=token_symbol)
