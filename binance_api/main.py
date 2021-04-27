@@ -20,7 +20,6 @@ with open('binance_api\coins_name.json', 'r') as fp:
     coin_names = json.load(fp)
 
 options = get_coin_names_and_format()
-# print(options)
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
