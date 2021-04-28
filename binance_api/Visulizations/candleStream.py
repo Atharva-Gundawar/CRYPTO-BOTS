@@ -36,31 +36,7 @@ options = get_symbol_base_asset_dict()
 bm = BinanceSocketManager(client)
 
 
-def display_candlestick(token_symbol='BNBBTC'):
-    
-    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE,"1 day ago UTC")
-    df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
-    df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
-    df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
-    data = [df['dateTime'],df['open'],df['high'],df['low'],df['close']]
-    headers = ['dateTime','open','high','low','close']
-    df = pd.concat(data, axis=1, keys=headers)
-    
-    fig = go.Figure(data=[go.Candlestick(
- 
-    x=df['dateTime'],
-    open=df['open'], high=df['high'],
-    low=df['low'], close=df['close'],
-    increasing_line_color= 'cyan', decreasing_line_color= 'red'
-    )])
 
-    fig.update_layout(
-        title=token_symbol,
-        yaxis_title='Stock price',
-        xaxis_rangeslider_visible=True
-    )
-
-    return fig
 
 def get_process_message(coin):
     def process_message(msg):
@@ -95,13 +71,14 @@ app.layout = html.Div([
     [Input('my-dropdown', 'value')])
 
 def display_candlestick(token_symbol='BNBBTC'):
-    global df
-    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
-    print(token_symbol)
-    print(token_symbol)
+    
+    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE,"1 day ago UTC")
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
+    data = [df['dateTime'],df['open'],df['high'],df['low'],df['close']]
+    headers = ['dateTime','open','high','low','close']
+    df = pd.concat(data, axis=1, keys=headers)
     
     fig = go.Figure(data=[go.Candlestick(
  
