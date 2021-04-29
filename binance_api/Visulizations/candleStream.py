@@ -110,10 +110,3 @@ if __name__ == '__main__':
 
 
 
-# bm = BinanceSocketManager(client)
-# # start any sockets here, i.e a trade socket
-# conn_key = bm.start_trade_socket('BNBBTC', process_message)
-# bm.start()
-# # conn_key = bm.start_multiplex_socket(['bnbbtc@aggTrade', 'neobtc@ticker'], process_m_message)
-# # then start the socket manager
-# # bm.start()
