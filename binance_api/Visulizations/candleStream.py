@@ -72,7 +72,7 @@ app.layout = html.Div([
 
 def display_candlestick(token_symbol='BNBBTC'):
     
-    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE,"1 day ago UTC")
+    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE , "1 day ago UTC")
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
