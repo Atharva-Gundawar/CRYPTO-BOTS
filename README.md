@@ -1,0 +1,1 @@
+# Repo for MINI CRYPTO PROJECTS  
