@@ -13,10 +13,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from dotenv import load_dotenv
 import json
-from binance_api.utils.coinNamesList import get_coin_names_and_format,symbol_to_coin,get_symbol_base_asset_dict
-import dash
-import dash_html_components as html
-import dash_core_components as dcc
+from ..utils.coinNamesList import get_coin_names_and_format,symbol_to_coin,get_symbol_base_asset_dict
 import numpy as np
 from datetime import datetime
 from dash.dependencies import Input, Output
@@ -44,6 +41,7 @@ def get_process_message(coin):
             pp.pprint(msg)
             if msg['s'] == coin:
                 df.append(client.get_server_time()['serverTime'],msg['o'],msg['h'],msg['l'],msg['c'])
+                print(client.get_server_time()['serverTime'],msg['o'],msg['h'],msg['l'],msg['c'])
         except Exception:
             bm.close()
     return process_message
@@ -55,6 +53,12 @@ bm.start()
 
 
 app = dash.Dash(__name__)
+
+interval = dcc.Interval(        # Update interval for grpah 
+    id='interval-component',
+    interval=5000, # in milliseconds
+    n_intervals=0
+)
 
 app.layout = html.Div([
     html.H2("Choose a Crypo Symbol from below:"),
@@ -72,7 +76,7 @@ app.layout = html.Div([
 
 def display_candlestick(token_symbol='BNBBTC'):
     
-    candles = client.get_klines(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE , "1 day ago UTC")
+    candles = client.get_recent_trades(symbol=token_symbol, interval=Client.KLINE_INTERVAL_1MINUTE)
     df = pd.DataFrame(candles, columns=['dateTime', 'open', 'high', 'low', 'close', 'volume', 'closeTime', 'quoteAssetVolume', 'numberOfTrades', 'takerBuyBaseVol', 'takerBuyQuoteVol', 'ignore'])
     df.dateTime = pd.to_datetime(df.dateTime, unit='ms')
     df.closeTime = pd.to_datetime(df.closeTime, unit='ms')
