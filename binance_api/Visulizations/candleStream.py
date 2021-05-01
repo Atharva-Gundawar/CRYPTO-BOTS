@@ -13,8 +13,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from dotenv import load_dotenv
 import json
-from ..utils.coinNamesList import get_coin_names_and_format,symbol_to_coin,get_symbol_base_asset_dict
+# from ..utils.coinNamesList import get_coin_names_and_format,symbol_to_coin,get_symbol_base_asset_dict
 import numpy as np
+from .. import *
 from datetime import datetime
 from dash.dependencies import Input, Output
 
