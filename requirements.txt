@@ -1,0 +1,10 @@
+binance==0.3
+dash_html_components==1.1.3
+plotly==4.14.3
+dotenv==0.0.5
+numpy==1.18.4
+dash==1.20.0
+binance_api==0.1.2
+pandas==1.0.4
+datetime==4.3
+dash_core_components==1.16.0
